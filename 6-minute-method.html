@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 6-Minute Method - Express Reprogramming</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #ffffff;
+        }
+        
+        .page {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20mm;
+            background: white;
+            page-break-after: always;
+        }
+        
+        /* Cover Page */
+        .cover {
+            height: 297mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cover::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -200px;
+            right: -200px;
+        }
+        
+        .cover::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            bottom: -150px;
+            left: -150px;
+        }
+        
+        .cover-content {
+            z-index: 1;
+            max-width: 600px;
+            padding: 0 40px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .cover h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 64px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cover .subtitle {
+            font-size: 24px;
+            font-weight: 300;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+        
+        .cover .highlight {
+            font-size: 18px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 20px 40px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            margin-top: 40px;
+        }
+        
+        /* Chapter Styles */
+        .chapter-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: #667eea;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+            line-height: 1.3;
+        }
+        
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        
+        h4 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #667eea;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        p {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+        
+        .intro-box {
+            background: linear-gradient(135deg, #f6f8fb 0%, #eef2f7 100%);
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+            margin: 30px 0;
+        }
+        
+        .intro-box p {
+            margin-bottom: 15px;
+        }
+        
+        .intro-box p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* Lists */
+        ul, ol {
+            margin: 20px 0 20px 30px;
+        }
+        
+        li {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 12px;
+            color: #2d3748;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin: 30px 0;
+        }
+        
+        .feature-list li {
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            font-weight: 500;
+        }
+        
+        .feature-list li strong {
+            color: #667eea;
+            font-size: 18px;
+        }
+        
+        /* Technique Boxes */
+        .technique-box {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .technique-box h4 {
+            margin-top: 0;
+            color: #764ba2;
+        }
+        
+        /* Step Cards */
+        .step-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+        
+        .step-card h3 {
+            color: white;
+            margin-top: 0;
+        }
+        
+        .step-card p {
+            color: rgba(255, 255, 255, 0.95);
+        }
+        
+        .step-card ul {
+            margin-left: 20px;
+        }
+        
+        .step-card li {
+            color: rgba(255, 255, 255, 0.95);
+        }
+        
+        /* Challenge Table */
+        .challenge-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 14px;
+        }
+        
+        .challenge-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .challenge-table td {
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .challenge-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        
+        /* Affirmation Cards */
+        .affirmation-card {
+            background: linear-gradient(135deg, #f6f8fb 0%, #eef2f7 100%);
+            padding: 20px 25px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #764ba2;
+            font-style: italic;
+            font-size: 15px;
+            color: #2d3748;
+        }
+        
+        /* Highlight Box */
+        .highlight-box {
+            background: #fff5e6;
+            border: 2px solid #ffa500;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        
+        .highlight-box strong {
+            color: #ff8c00;
+            font-size: 18px;
+        }
+        
+        /* Footer */
+        .page-footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #e2e8f0;
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        @media print {
+            .page {
+                margin: 0;
+                page-break-after: always;
+            }
+            
+            body {
+                background: white;
+            }
+        }
+        
+        /* Mobile responsive styles */
+        @media screen and (max-width: 768px) {
+            .page {
+                max-width: 100%;
+                padding: 20px;
+                margin: 0;
+            }
+            
+            .cover {
+                height: 100vh;
+                padding: 20px;
+            }
+            
+            .cover h1 {
+                font-size: 36px;
+            }
+            
+            .cover .subtitle {
+                font-size: 18px;
+            }
+            
+            .cover .highlight {
+                font-size: 16px;
+                padding: 15px 20px;
+            }
+            
+            .cover-content {
+                padding: 0 20px;
+            }
+            
+            h2 {
+                font-size: 32px;
+            }
+            
+            h3 {
+                font-size: 24px;
+            }
+            
+            h4 {
+                font-size: 18px;
+            }
+            
+            p, li {
+                font-size: 15px;
+            }
+            
+            .intro-box,
+            .technique-box,
+            .step-card,
+            .highlight-box {
+                padding: 20px;
+            }
+            
+            .challenge-table {
+                font-size: 12px;
+            }
+            
+            .challenge-table th,
+            .challenge-table td {
+                padding: 10px 8px;
+            }
+            
+            ul, ol {
+                margin-left: 20px;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .page {
+                padding: 15px;
+            }
+            
+            .cover h1 {
+                font-size: 28px;
+            }
+            
+            .cover .subtitle {
+                font-size: 16px;
+            }
+            
+            h2 {
+                font-size: 26px;
+            }
+            
+            h3 {
+                font-size: 20px;
+            }
+            
+            .intro-box,
+            .technique-box,
+            .step-card,
+            .highlight-box {
+                padding: 15px;
+            }
+            
+            .challenge-table {
+                font-size: 11px;
+            }
+            
+            .challenge-table th,
+            .challenge-table td {
+                padding: 8px 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- COVER PAGE -->
+    <div class="page cover">
+        <div class="cover-content">
+            <div class="badge">REVOLUTIONARY METHOD</div>
+            <h1>The 6-Minute<br>Method</h1>
+            <p class="subtitle">Express Reprogramming to Change Your Life in 21 Days</p>
+            <div class="highlight">
+                ✨ Transform your mind in just 6 minutes a day
+            </div>
+        </div>
+    </div>
+
+    <!-- Executive Summary -->
+    <div class="page">
+        <div class="chapter-number">EXECUTIVE SUMMARY</div>
+        <h2>What You'll Learn</h2>
+        
+        <div class="intro-box">
+            <p><strong>This guide contains a 6-minute scientific protocol that will reprogram your mind in 21 days.</strong></p>
+            
+            <p>It's not theory. It's not empty motivation. It's a practical system based on neuroscience that has already transformed thousands of lives.</p>
+        </div>
+        
+        <h3>📚 What You'll Discover:</h3>
+        
+        <ul class="feature-list">
+            <li><strong>Why 6 minutes is enough</strong> — The science behind the neural plasticity window and how to leverage it</li>
+            <li><strong>The complete 3-step protocol</strong> — Brain activation, emotional reprogramming, and daily direction</li>
+            <li><strong>Pattern interruption techniques</strong> — How to cut negative thoughts in 4 seconds</li>
+            <li><strong>The 21-Day Challenge</strong> — Complete tracking system to create permanent new neural circuits</li>
+            <li><strong>12 reprogramming phrases</strong> — Powerful mental commands for different life areas</li>
+        </ul>
+        
+        <h3>🎯 Key Benefits:</h3>
+        
+        <ul>
+            <li>✅ More mental clarity and focus throughout the day</li>
+            <li>✅ Significant reduction in anxiety and stress</li>
+            <li>✅ Increased energy and motivation</li>
+            <li>✅ Greater confidence and self-esteem</li>
+            <li>✅ More positive and constructive thought patterns</li>
+            <li>✅ Better emotional control and resilience</li>
+            <li>✅ Elevated productivity with less effort</li>
+        </ul>
+        
+        <h3>👤 Who This Method Is For:</h3>
+        
+        <div class="technique-box">
+            <p><strong>This method is for you if:</strong></p>
+            <ul>
+                <li>You wake up tired and unmotivated</li>
+                <li>You struggle with anxiety and negative thoughts</li>
+                <li>You feel stuck in destructive patterns</li>
+                <li>You want more focus, clarity, and purpose</li>
+                <li>You've tried other methods but couldn't maintain consistency</li>
+                <li>You have a busy routine and need something quick and effective</li>
+            </ul>
+        </div>
+        
+        <h3>⏱️ Expected Results in 21 Days:</h3>
+        
+        <div class="step-card">
+            <p><strong>Week 1 (Days 1-7):</strong> You'll feel more morning energy, less anxiety, and greater mental clarity</p>
+            
+            <p><strong>Week 2 (Days 8-14):</strong> Your thought patterns will begin to change. You'll react differently to situations</p>
+            
+            <p><strong>Week 3 (Days 15-21):</strong> The new habit will be consolidated. Deep transformations in confidence, focus, and well-being</p>
+        </div>
+        
+        <div class="highlight-box">
+            <p><strong>Important:</strong> Don't worry if you don't understand neuroscience, psychology, or complex techniques.</p>
+            
+            <p>Everything here is explained in a simple, practical, and accessible way. You just need to follow the 6-minute protocol.</p>
+            
+            <p><strong>If you can count to 6, you can do this method.</strong></p>
+        </div>
+        
+        <div class="page-footer">
+            <p>Estimated reading time: 30-40 minutes | Daily practice time: 6 minutes</p>
+        </div>
+    </div>
+
+    <!-- INTRODUCTION PAGE -->
+    <div class="page">
+        <div class="chapter-number">INTRODUCTION</div>
+        <h2>The Story of a Real Transformation</h2>
+        
+        <div class="intro-box">
+            <p><strong>It was 6:15 AM.</strong> Another day starting the same way: exhaustion, anxiety, that feeling of being trapped in an endless cycle.</p>
+            
+            <p>I stared at the ceiling thinking: "Will my life always be like this?"</p>
+            
+            <p>Unfulfilling work. Superficial relationships. Shelved dreams. And worst of all: the constant feeling of just surviving, never truly living.</p>
+            
+            <p>That's when everything changed. Not overnight. Not with a magic formula.</p>
+            
+            <p><strong>It changed in 6 minutes a day, for 21 days.</strong></p>
+            
+            <p>Today, I wake up with purpose. I have clarity about who I am and where I'm going. And it all started when I discovered I didn't need hours of therapy or complex rituals.</p>
+            
+            <p>I just needed to reprogram my mind. And you can too.</p>
+        </div>
+        
+        <h2>What makes this method unique?</h2>
+        
+        <p>You don't need more theory.</p>
+        
+        <p>You need a system that works. Fast. Simple. Effective.</p>
+        
+        <p><strong>The 6-Minute Method</strong> is exactly that: a mental reprogramming protocol based on neuroscience, tested by thousands of people, that fits any routine.</p>
+        
+        <div class="intro-box">
+            <p>This isn't another self-help book full of empty promises.</p>
+            
+            <p>It's a practical manual for brain transformation. Every technique here has scientific foundation. Every exercise was designed to create real neurological changes.</p>
+            
+            <p><strong>And it works because it works with your brain's biology, not against it.</strong></p>
+        </div>
+        
+        <h3>How does it work?</h3>
+        
+        <p>The method is divided into three powerful stages, each lasting 2 minutes:</p>
+        
+        <ul class="feature-list">
+            <li><strong>2 minutes to activate the brain</strong> — Neuroactivation that awakens your mind for high performance</li>
+            <li><strong>2 minutes to reprogram patterns</strong> — Replacing limiting thoughts with powerful commands</li>
+            <li><strong>2 minutes to direct energy</strong> — Intentional planning that sets the tone for your day</li>
+        </ul>
+        
+        <h3>Why does it work? The science behind the method</h3>
+        
+        <p>Researchers at Stanford and Harvard discovered something revolutionary: <strong>your brain is most malleable in the first 20 minutes after waking up.</strong></p>
+        
+        <p>During this period, called the "neural plasticity window," your mind is in a unique state of receptivity. It's as if the brain is waiting for instructions on how to operate during the day.</p>
+        
+        <p>Neuroscientist Andrew Huberman explains: when you wake up, your prefrontal cortex isn't fully active yet. This means you have direct access to the subconscious patterns that govern 95% of your daily actions.</p>
+        
+        <p><strong>It's in this window that the magic happens.</strong></p>
+        
+        <p>This method is based on:</p>
+        
+        <ul>
+            <li><strong>Neuroplasticity</strong> — The proven ability of the brain to reorganize and create new neural connections</li>
+            <li><strong>Micro-habits</strong> — MIT research shows that small, consistent actions generate permanent transformations</li>
+            <li><strong>Behavioral Psychology</strong> — Validated techniques to reprogram automatic thought patterns</li>
+            <li><strong>High Performance Protocols</strong> — Strategies used by Olympic athletes and successful CEOs</li>
+        </ul>
+        
+        <div class="highlight-box">
+            <p><strong>The difference:</strong> No fluff. No endless theories. Just a direct, scientific, and absurdly effective protocol. You'll see results in 21 days or less.</p>
+        </div>
+    </div>
+
+    <!-- CHAPTER 1 -->
+    <div class="page">
+        <div class="chapter-number">CHAPTER 1</div>
+        <h2>Why 6 minutes changes everything?</h2>
+        
+        <p>Let me ask you an honest question:</p>
+        
+        <p><strong>How do you start your day?</strong></p>
+        
+        <p>Do you grab your phone before even getting out of bed? Scroll through Instagram? Read bad news? Already start thinking about everything you need to do and feel that anxiety rising?</p>
+        
+        <p>If you answered yes to any of these questions, you're programming your brain for failure.</p>
+        
+        <p>It sounds harsh, but it's the truth.</p>
+        
+        <h3>The Brain and the Golden Window</h3>
+        
+        <p>In the first 20 minutes after waking up, your brain is in a state called <strong>"increased plasticity window."</strong></p>
+        
+        <p>Think of it this way: it's as if your brain is a computer rebooting. At this moment, it's deciding which programs to run during the day.</p>
+        
+        <p>If you grab your phone and consume negative content, you're literally programming anxiety, distraction, and reactivity.</p>
+        
+        <p>If you use these minutes intentionally, you program focus, clarity, and purpose.</p>
+        
+        <div class="technique-box">
+            <h4>🧠 Scientific Fact</h4>
+            <p>Studies in neuroscience from the University of California show that the first 20 minutes after waking define cortisol levels (stress hormone) and dopamine (motivation hormone) for the entire day.</p>
+            
+            <p>In other words: <strong>how you start the day determines how you live the day.</strong></p>
+        </div>
+        
+        <h3>The "Neural Reset" you need</h3>
+        
+        <p>Every day, your brain needs a proper reset.</p>
+        
+        <p>Without this reset, you carry:</p>
+        
+        <ul>
+            <li>Negative thoughts from the previous day</li>
+            <li>Accumulated anxiety</li>
+            <li>Destructive mental patterns</li>
+            <li>Lack of direction and purpose</li>
+            <li>Scattered energy and fragmented focus</li>
+        </ul>
+        
+        <p><strong>The 6-Minute Method is that reset.</strong></p>
+        
+        <p>It's the restart button you press every day to begin from scratch, with a clean mind programmed to win.</p>
+        
+        <h3>Why exactly 6 minutes?</h3>
+        
+        <p>That's the question everyone asks.</p>
+        
+        <p>Why not 30 minutes? Why not 1 hour of meditation?</p>
+        
+        <p>The answer lies in the science of micro-habits.</p>
+        
+        <p>Researchers at Stanford University discovered that <strong>the smaller and simpler the action, the higher the adherence rate</strong>.</p>
+        
+        <p>Six minutes is:</p>
+        
+        <ul>
+            <li><strong>Short enough</strong> not to generate mental resistance</li>
+            <li><strong>Long enough</strong> to create real neurological impact</li>
+            <li><strong>Easy to fit</strong> into any routine, even the most chaotic</li>
+            <li><strong>Impossible to make excuses</strong> — no one can say they don't have 6 minutes</li>
+        </ul>
+        
+        <div class="intro-box">
+            <p><strong>The naked truth:</strong> You don't need hours of meditation or elaborate rituals. You need consistency in small, powerful actions.</p>
+            
+            <p>And that's exactly what this method delivers.</p>
+        </div>
+        
+        <p>In the next chapters, you'll learn exactly what to do in those 6 minutes.</p>
+        
+        <p>But first, you need to understand how mental reprogramming really works.</p>
+    </div>
+
+    <!-- CHAPTER 2 -->
+    <div class="page">
+        <div class="chapter-number">CHAPTER 2</div>
+        <h2>The key to rapid reprogramming</h2>
+        
+        <p>I'm going to tell you something that will change your perspective forever:</p>
+        
+        <p><strong>You are not your thoughts.</strong></p>
+        
+        <p>Read that again. Let it sink in.</p>
+        
+        <p>That voice in your head saying "you're not good enough"? That's not you.</p>
+        
+        <p>That automatic thought of "today's going to be a hard day"? That's not you.</p>
+        
+        <p>They're just neural patterns. Circuits that have been reinforced over time. And just as they were created, <strong>they can be reprogrammed</strong>.</p>
+        
+        <h3>How your brain creates patterns</h3>
+        
+        <p>Imagine your brain is a forest.</p>
+        
+        <p>Each thought you have is like walking through the forest. At first, you need to clear a path through the trees.</p>
+        
+        <p>But if you pass through the same place every day, eventually a trail forms. Then, a road. And finally, a highway.</p>
+        
+        <p><strong>Repeated thoughts create neural highways.</strong></p>
+        
+        <p>The problem? Most people have highways of negative thoughts. Anxiety. Doubt. Fear. Procrastination.</p>
+        
+        <p>The good news? You can build new highways.</p>
+        
+        <div class="technique-box">
+            <h4>💡 Neuroscience Insight</h4>
+            <p>Research from Harvard's Neuroscience Institute shows that it takes only 21 days of consistent practice to create permanent new neural circuits.</p>
+            
+            <p>Each time you repeat a new thought or behavior, you strengthen that new "highway" in the brain.</p>
+            
+            <p><strong>Repetition + Emotion = Permanent reprogramming.</strong></p>
+        </div>
+        
+        <h3>The 4-second technique to cut negative thoughts</h3>
+        
+        <p>There's a powerful technique called <strong>"Pattern Interruption."</strong></p>
+        
+        <p>Neuroscientists discovered that you have a 4-second window between the emergence of a thought and its emotional consolidation.</p>
+        
+        <p>In those 4 seconds, you can intercept and redirect.</p>
+        
+        <p>It works like this:</p>
+        
+        <ol>
+            <li><strong>Identify (1 second)</strong> — Notice the negative thought emerging</li>
+            <li><strong>Name (1 second)</strong> — Say mentally: "This is just a thought"</li>
+            <li><strong>Replace (1 second)</strong> — Immediately put an opposite thought</li>
+            <li><strong>Anchor (1 second)</strong> — Make a physical gesture (snap fingers, touch wrist)</li>
+        </ol>
+        
+        <p>Sounds simple? That's because it is.</p>
+        
+        <p>But when practiced consistently, <strong>this technique literally rebuilds your brain</strong>.</p>
+        
+        <h3>Internal commands: programming your operating system</h3>
+        
+        <p>Your brain works like a computer.</p>
+        
+        <p>It responds to direct commands. But most people don't know this and spend their entire lives running faulty programs.</p>
+        
+        <p>Internal commands are clear instructions you give to your subconscious.</p>
+        
+        <div class="step-card">
+            <h3>How to create powerful commands:</h3>
+            <ul>
+                <li><strong>Use present tense</strong> — "I am," never "I will be"</li>
+                <li><strong>Be specific</strong> — "I am focused and productive" instead of "I want to be better"</li>
+                <li><strong>Add emotion</strong> — Feel what you're saying</li>
+                <li><strong>Repeat with conviction</strong> — Your brain responds to intensity</li>
+            </ul>
+        </div>
+        
+        <p><strong>Examples of reprogramming commands:</strong></p>
+        
+        <ul>
+            <li>"I am capable and confident in all situations"</li>
+            <li>"My mind is clear, focused, and powerful"</li>
+            <li>"I attract opportunities and transform them into results"</li>
+            <li>"I have complete control over my emotions and reactions"</li>
+            <li>"I am the best version of myself every day"</li>
+        </ul>
+        
+        <div class="highlight-box">
+            <p><strong>Remember:</strong> Reprogramming isn't instant. But with the 6-Minute Method practiced for 21 days, you'll create new neural patterns that become automatic.</p>
+            
+            <p>You won't need to "try" to think positive anymore. Your brain will do it naturally.</p>
+        </div>
+        
+        <p>Now that you understand the science, let's get to the practical protocol.</p>
+    </div>
+
+    <!-- CHAPTER 3 -->
+    <div class="page">
+        <div class="chapter-number">CHAPTER 3</div>
+        <h2>Step 1 (2 min): Activate your brain</h2>
+        
+        <p>The first 2 minutes are dedicated to <strong>neuroactivation</strong>.</p>
+        
+        <p>You'll intentionally awaken your brain, oxygenate your neural cells, and activate your nervous system for high performance.</p>
+        
+        <p>Don't skip this step. It's the foundation of everything.</p>
+        
+        <h3>🫁 Energizing Breathing (30 seconds)</h3>
+        
+        <p>Start with the 4-7-8 breathing technique, used by Olympic athletes and special forces:</p>
+        
+        <div class="technique-box">
+            <h4>Breathing Protocol</h4>
+            <ol>
+                <li><strong>Inhale deeply through your nose</strong> counting to 4</li>
+                <li><strong>Hold your breath</strong> counting to 7</li>
+                <li><strong>Exhale completely through your mouth</strong> counting to 8</li>
+                <li><strong>Repeat 3 times</strong></li>
+            </ol>
+            <p><strong>Why it works:</strong> This technique increases brain oxygenation by up to 30%, activates the parasympathetic nervous system, and prepares your mind for maximum focus.</p>
+            
+            <p>Andrew Huberman, Stanford neuroscientist, calls this a "physiological reset" — you're literally changing your brain chemistry.</p>
+        </div>
+        
+        <h3>💬 Activation Declaration (30 seconds)</h3>
+        
+        <p>Now, say out loud (or mentally with maximum conviction):</p>
+        
+        <div class="affirmation-card">
+            "I wake up with energy, clarity, and purpose. My brain is active, my mind is sharp, and I'm ready to create an extraordinary day. I am powerful. I am focused. I am unstoppable."
+        </div>
+        
+        <p><strong>Important:</strong> Don't just read. FEEL each word. Your brain responds to emotion, not logic.</p>
+        
+        <p>Repeat 2-3 times with increasing intensity.</p>
+        
+        <h3>🧍 Body Activation (30 seconds)</h3>
+        
+        <p>Your body and mind are connected. Change your physiology, change your mental state.</p>
+        
+        <p>Do this quick sequence:</p>
+        
+        <ul>
+            <li><strong>Stand up</strong> and stretch your arms upward</li>
+            <li><strong>Take 5 deep breaths</strong> in this position</li>
+            <li><strong>Smile</strong> (even if forced — this releases endorphins and serotonin)</li>
+            <li><strong>Clap 3 times</strong> with maximum energy</li>
+        </ul>
+        
+        <p>Sounds silly? Maybe. But it works.</p>
+        
+        <p>Harvard University research shows that power poses increase testosterone (confidence hormone) by 20% and reduce cortisol (stress hormone) by 25%.</p>
+        
+        <h3>⚡ Anchoring Gesture (30 seconds)</h3>
+        
+        <p>Now comes the most important part: creating a physical anchor.</p>
+        
+        <div class="technique-box">
+            <h4>Your Personal Power Gesture</h4>
+            <p>Choose a simple gesture that will be your "activation trigger":</p>
+            <ul>
+                <li>Fist bump on chest (like athletes)</li>
+                <li>Snap fingers</li>
+                <li>Touch wrist</li>
+                <li>Make a specific hand movement</li>
+            </ul>
+            <p><strong>Do this gesture always at the end of the 2 minutes.</strong></p>
+            
+            <p>Over time, just this gesture will instantly activate your ideal mental state. It's like a "focus mode" button you can press anytime during the day.</p>
+        </div>
+        
+        <div class="intro-box">
+            <p><strong>Result after 2 minutes:</strong> Your brain will be fully activated, oxygenated, and ready. You'll feel immediate mental clarity, elevated energy, and sharp focus.</p>
+            
+            <p>Now you're ready for reprogramming.</p>
+        </div>
+    </div>
+
+    <!-- CHAPTER 4 -->
+    <div class="page">
+        <div class="chapter-number">CHAPTER 4</div>
+        <h2>Step 2 (2 min): Emotional reprogramming</h2>
+        
+        <p>Now that your brain is active, it's time to reprogram the patterns that sabotage you.</p>
+        
+        <p>These 2 minutes will literally rewrite your mental code.</p>
+        
+        <h3>🔄 Immediate Replacement (45 seconds)</h3>
+        
+        <p>Identify the most common negative thought or emotion you have in the morning.</p>
+        
+        <p>It could be anxiety. It could be doubt. It could be mental fatigue.</p>
+        
+        <p>Now, replace it forcefully:</p>
+        
+        <div class="technique-box">
+            <h4>Examples of Powerful Replacement:</h4>
+            <p><strong>❌ "Today's going to be a hard day"</strong><br>
+            <strong>✅ "Today I have the opportunity to grow and prove my strength"</strong></p>
+            
+            <p><strong>❌ "I'm not good enough"</strong><br>
+            <strong>✅ "I'm constantly evolving and every day I become stronger"</strong></p>
+            
+            <p><strong>❌ "I have no energy"</strong><br>
+            <strong>✅ "My body is full of vitality and unlimited energy"</strong></p>
+            
+            <p><strong>❌ "I can't do this"</strong><br>
+            <strong>✅ "I'm capable of overcoming any challenge that appears"</strong></p>
+        </div>
+        
+        <p><strong>Repeat your replacement 3 times with maximum conviction.</strong></p>
+        
+        <p>Don't just say it. FEEL it. Believe it. Embody it.</p>
+        
+        <h3>⚓ Emotional Anchoring (45 seconds)</h3>
+        
+        <p>Now you'll create a positive emotional anchor you can access anytime.</p>
+        
+        <p>This technique is used by elite athletes before competitions:</p>
+        
+        <ol>
+            <li><strong>Close your eyes</strong></li>
+            <li><strong>Remember a moment</strong> when you felt incredible — a victory, a moment of pride, an achievement</li>
+            <li><strong>Relive that feeling</strong> for 30 seconds — see the images, hear the sounds, feel the emotions</li>
+            <li><strong>While feeling this</strong>, touch your wrist or do your power gesture</li>
+        </ol>
+        
+        <p>You just created a neural anchor.</p>
+        
+        <p>Whenever you make that gesture, your brain will automatically access that positive emotional state.</p>
+        
+        <h3>🧘 Anti-Anxiety Protocol (30 seconds)</h3>
+        
+        <p>Say these 5 phrases in sequence, with your hand on your heart:</p>
+        
+        <div class="affirmation-card">
+            1. "I am safe now"<br>
+            2. "I have control over my choices"<br>
+            3. "I trust life's process"<br>
+            4. "I release what I cannot control"<br>
+            5. "I choose inner peace"
+        </div>
+        
+        <p>These phrases activate the parasympathetic nervous system, reducing cortisol and increasing serotonin.</p>
+        
+        <p>It's like pressing the "emotional reset" button.</p>
+        
+        <div class="step-card">
+            <h3>💎 Advanced Technique</h3>
+            <p>Place your hand on your heart while saying these phrases. Research from the HeartMath Institute shows that physical connection with the heart enhances the emotional effect by up to 40%.</p>
+            
+            <p>You're literally synchronizing your heart and mind.</p>
+        </div>
+        
+        <div class="intro-box">
+            <p><strong>Result after 2 minutes:</strong> You've reprogrammed your negative emotional patterns and created a mental state of confidence, calm, and positivity.</p>
+            
+            <p>Your brain is now operating on a completely different frequency.</p>
+        </div>
+    </div>
+
+    <!-- CHAPTER 5 -->
+    <div class="page">
+        <div class="chapter-number">CHAPTER 5</div>
+        <h2>Step 3 (2 min): Daily direction</h2>
+        
+        <p>The last 2 minutes are for directing your energy and creating a clear action plan.</p>
+        
+        <p>Without direction, you have energy but no focus. With direction, you become unstoppable.</p>
+        
+        <h3>❓ The Power Question (30 seconds)</h3>
+        
+        <p>Ask yourself this question and let the answer emerge naturally:</p>
+        
+        <div class="affirmation-card">
+            "What can I do today that will make me proud of myself when the day ends?"
+        </div>
+        
+        <p>Don't force the answer. Let it come.</p>
+        
+        <p>It could be something big (closing a deal, having a difficult conversation) or something simple (working out, reading 20 pages, calling someone you love).</p>
+        
+        <p><strong>The important thing is to have a clear intention.</strong></p>
+        
+        <h3>📋 Rule of 3 Priorities (60 seconds)</h3>
+        
+        <p>Now, define only 3 priorities for the day.</p>
+        
+        <p>Not 10. Not 5. Just 3.</p>
+        
+        <div class="technique-box">
+            <h4>How to choose your 3 priorities:</h4>
+            <ol>
+                <li><strong>Priority 1 (Non-Negotiable):</strong> The most important task that MUST be done today</li>
+                <li><strong>Priority 2 (Growth):</strong> Something that will bring you closer to a bigger goal</li>
+                <li><strong>Priority 3 (Well-Being):</strong> Something for your body or mind (exercise, reading, meditation)</li>
+            </ol>
+            <p><strong>Golden rule:</strong> Never plan more than 3 things. Focus is better than quantity. Depth is better than dispersion.</p>
+        </div>
+        
+        <p>MIT research shows that people who define 3 clear priorities are 300% more productive than those who try to do everything.</p>
+        
+        <h3>🏷️ Word of the Day (15 seconds)</h3>
+        
+        <p>Choose ONE word that will represent your energy and intention for the day:</p>
+        
+        <ul>
+            <li><strong>Focus</strong> — For days requiring maximum concentration</li>
+            <li><strong>Courage</strong> — To face challenges and leave your comfort zone</li>
+            <li><strong>Gratitude</strong> — To cultivate abundance and positivity</li>
+            <li><strong>Energy</strong> — For intense, action-packed days</li>
+            <li><strong>Peace</strong> — For stressful days requiring calm</li>
+            <li><strong>Determination</strong> — For when you need to persist</li>
+        </ul>
+        
+        <p>Repeat this word 3 times with intention.</p>
+        
+        <p>This word will be your mental anchor during the day. Whenever you feel scattered, return to it.</p>
+        
+        <h3>🚀 Action Mode Activation (15 seconds)</h3>
+        
+        <p>Finish with this powerful declaration:</p>
+        
+        <div class="affirmation-card">
+            "I am ready. I am focused. I will act with purpose and determination. This day is mine. I will conquer it."
+        </div>
+        
+        <p>Say it with maximum conviction and do your power gesture.</p>
+        
+        <div class="highlight-box">
+            <p><strong>Final result:</strong> You've finished the 6 minutes with total clarity about the day, directed energy, and a clear action plan.</p>
+            
+            <p>Your brain is activated. Your emotions are programmed. Your direction is defined.</p>
+            
+            <p><strong>Now just execute.</strong></p>
+        </div>
+    </div>
+
+    <!-- Cost of Inaction -->
+    <div class="page">
+        <div class="chapter-number">IMPORTANT REFLECTION</div>
+        <h2>The Cost of Not Acting</h2>
+        
+        <p>Before starting the challenge, you need to understand something crucial:</p>
+        
+        <p><strong>Doing nothing is also a choice. And that choice has a price.</strong></p>
+        
+        <h3>What happens if you don't apply this method?</h3>
+        
+        <p>I'll be direct with you.</p>
+        
+        <p>If you close this guide and do nothing, 21 days from now you'll be exactly where you are now.</p>
+        
+        <p>Same thoughts. Same patterns. Same results.</p>
+        
+        <div class="intro-box" style="background: #fff5e6; border-left-color: #ffa500;">
+            <p><strong>6 months from now:</strong></p>
+            <ul>
+                <li>You'll still wake up with that feeling of tiredness and lack of purpose</li>
+                <li>You'll still struggle with the same negative thoughts</li>
+                <li>You'll still feel like you're just surviving, not living</li>
+                <li>You'll still look at your life and think "I could be better"</li>
+            </ul>
+        </div>
+        
+        <div class="intro-box" style="background: #fff5e6; border-left-color: #ffa500;">
+            <p><strong>1 year from now:</strong></p>
+            <ul>
+                <li>You'll have lost 365 opportunities to reprogram your mind</li>
+                <li>You'll have reinforced even more the mental patterns that sabotage you</li>
+                <li>You'll have wasted 2,190 minutes (just 6 minutes a day) that could have changed your life</li>
+                <li>You'll look back and think: "Why didn't I start when I had the chance?"</li>
+            </ul>
+        </div>
+        
+        <h3>The Brutal Truth About Inaction</h3>
+        
+        <p>Every day you don't act is a day you reinforce the old patterns.</p>
+        
+        <p>Your brain doesn't stand still. It's always molding itself.</p>
+        
+        <p>The question is: will you mold it intentionally or let it continue operating on autopilot?</p>
+        
+        <div class="technique-box">
+            <h4>💭 Ask Yourself:</h4>
+            <ul>
+                <li>How much time have you already wasted waiting for the "right moment" to change?</li>
+                <li>How many times have you said "I'll start Monday" and never did?</li>
+                <li>How much of your life are you willing to waste before acting?</li>
+                <li>How will you feel 1 year from now if nothing changes?</li>
+            </ul>
+        </div>
+        
+        <h3>The Real Cost of Inaction</h3>
+        
+        <p>It's not just about what you don't gain. It's about what you lose:</p>
+        
+        <ul>
+            <li><strong>Lost opportunities</strong> — How many chances have you let pass due to lack of confidence or mental clarity?</li>
+            <li><strong>Affected relationships</strong> — How do your anxiety and negativity impact the people around you?</li>
+            <li><strong>Deteriorated health</strong> — Chronic stress and negative mental patterns destroy your body</li>
+            <li><strong>Wasted potential</strong> — You have capabilities that will never be realized if you don't change</li>
+            <li><strong>Accumulated regret</strong> — The weight of knowing you could have changed but chose to do nothing</li>
+        </ul>
+        
+        <div class="step-card">
+            <h3>⚡ The Choice Is Yours</h3>
+            <p>You have two options now:</p>
+            
+            <p><strong>Option 1:</strong> Close this guide, return to your routine, and continue exactly as you are. 21 days from now, nothing will have changed.</p>
+            
+            <p><strong>Option 2:</strong> Commit to 6 minutes a day for the next 21 days and create a real and permanent transformation.</p>
+            
+            <p style="margin-top: 30px;"><strong>Which do you choose?</strong></p>
+        </div>
+        
+        <div class="highlight-box">
+            <p><strong>Remember:</strong> 21 days from now, you'll thank yourself for starting today.</p>
+            
+            <p>Or you'll regret not doing anything.</p>
+            
+            <p><strong>The difference between these two realities is a decision you make now.</strong></p>
+        </div>
+        
+        <p style="margin-top: 40px; font-size: 18px; font-weight: 600; text-align: center;">Don't let another day pass. Start tomorrow.</p>
+    </div>
+
+    <!-- CHAPTER 6 -->
+    <div class="page">
+        <div class="chapter-number">CHAPTER 6</div>
+        <h2>The 21-Day Challenge</h2>
+        
+        <p>Here's the truth no one tells you:</p>
+        
+        <p><strong>Knowledge without action is just entertainment.</strong></p>
+        
+        <p>You can read this guide 10 times. You can find it amazing. You can even share it with friends.</p>
+        
+        <p>But if you don't PRACTICE, nothing will change.</p>
+        
+        <p>That's why the 21-Day Challenge exists.</p>
+        
+        <h3>Why 21 days?</h3>
+        
+        <p>Neuroscience is clear: <strong>it takes 21 days of consistent practice to create a permanent new neural circuit.</strong></p>
+        
+        <p>In the first 7 days, you're building the trail.</p>
+        
+        <p>In the next 7 days, you're paving the road.</p>
+        
+        <p>In the last 7 days, you're creating the highway.</p>
+        
+        <p>After 21 days, the habit becomes automatic. You don't need to "try" anymore. Your brain does it naturally.</p>
+        
+        <h3>📊 How the challenge works</h3>
+        
+        <p>For the next 21 days, you will:</p>
+        
+        <ul>
+            <li><strong>Practice the 6-Minute Method</strong> every day upon waking (no exceptions)</li>
+            <li><strong>Mark your completion</strong> in the tracking table</li>
+            <li><strong>Record observations</strong> about how you feel</li>
+            <li><strong>Celebrate small wins</strong> at each milestone reached</li>
+        </ul>
+        
+        <div class="step-card">
+            <h3>⚠️ Challenge Golden Rule</h3>
+            <p><strong>If you miss a day, don't give up.</strong></p>
+            
+            <p>Just continue the next day. Imperfect consistency is infinitely better than abandoned perfection.</p>
+            
+            <p>But be honest with yourself: if you skip more than 2 days, start over. Your brain needs consistency to create new patterns.</p>
+        </div>
+        
+        <h3>📅 Tracking Table</h3>
+        
+        <p>Use this table to track your progress. Mark a ✓ when you complete the day.</p>
+        
+        <table class="challenge-table">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Date</th>
+                    <th>Completed?</th>
+                    <th>Word of the Day</th>
+                    <th>How did you feel?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Day 1</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 2</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 3</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 4</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 5</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 6</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 7</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 8</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 9</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 10</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 11</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 12</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 13</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 14</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 15</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 16</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 17</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 18</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 19</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 20</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+                <tr><td>Day 21</td><td>___/___</td><td>☐</td><td>_____________</td><td>_____________________</td></tr>
+            </tbody>
+        </table>
+        
+        <h3>📝 Weekly Reflection</h3>
+        
+        <p>Every 7 days, stop and answer these questions:</p>
+        
+        <div class="technique-box">
+            <h4>Reflection Questions</h4>
+            <ol>
+                <li>How do I feel different compared to last week?</li>
+                <li>What changes have I noticed in my mental and emotional state?</li>
+                <li>What were my biggest challenges?</li>
+                <li>What will I improve or adjust next week?</li>
+                <li>What was my biggest win this week?</li>
+            </ol>
+        </div>
+        
+        <h3>🎁 Celebration Milestones</h3>
+        
+        <p>Celebrate each milestone reached:</p>
+        
+        <ul>
+            <li><strong>Day 7:</strong> You completed one week! Congratulations. Do something special for yourself today.</li>
+            <li><strong>Day 14:</strong> Two weeks! The habit is forming. You're on the right track.</li>
+            <li><strong>Day 21:</strong> You did it! The new neural pattern is created. You're officially a new version of yourself.</li>
+        </ul>
+        
+        <h3>💪 Tips to maintain consistency</h3>
+        
+        <ul>
+            <li><strong>Set your alarm 6 minutes earlier</strong> — Don't try to "fit in" the method. Wake up earlier.</li>
+            <li><strong>Leave this guide by your bedside</strong> — Make it easy to access.</li>
+            <li><strong>Don't grab your phone before doing the method</strong> — This is non-negotiable.</li>
+            <li><strong>Find an accountability partner</strong> — Share your progress with someone.</li>
+            <li><strong>Remember your "why"</strong> — Why do you want to change? Write it down and read it every day.</li>
+        </ul>
+        
+        <div class="highlight-box">
+            <p><strong>Promise:</strong> If you complete the 21 days with honesty and consistency, you won't be the same person.</p>
+            
+            <p>Your mind will be clearer. Your emotions will be more stable. Your focus will be sharper.</p>
+            
+            <p><strong>And you'll have proven to yourself that you're capable of real transformation.</strong></p>
+        </div>
+    </div>
+
+    <!-- BONUS -->
+    <div class="page">
+        <div class="chapter-number">SPECIAL BONUS</div>
+        <h2>12 Phrases That Reprogram the Mind</h2>
+        
+        <p>Use these phrases during your 2 minutes of reprogramming or whenever you need a mental boost.</p>
+        
+        <p><strong>Choose 2-3 phrases that resonate with you and repeat them with maximum conviction.</strong></p>
+        
+        <h3>💰 For Money and Abundance</h3>
+        
+        <div class="affirmation-card">
+            "I am a magnet for financial opportunities. Abundance flows naturally into my life and I know how to multiply it."
+        </div>
+        
+        <div class="affirmation-card">
+            "My mind is programmed to identify and seize prosperity opportunities. I create wealth with intelligence and purpose."
+        </div>
+        
+        <div class="affirmation-card">
+            "I deserve wealth and success. I work with strategy and determination to achieve them. Money comes to me with ease."
+        </div>
+        
+        <h3>💪 For Self-Esteem and Confidence</h3>
+        
+        <div class="affirmation-card">
+            "I am enough exactly as I am, and I'm constantly evolving. Every day I become a stronger version of myself."
+        </div>
+        
+        <div class="affirmation-card">
+            "My confidence is unshakeable. I face challenges with courage and transform obstacles into growth opportunities."
+        </div>
+        
+        <div class="affirmation-card">
+            "I completely trust my decisions and my ability to create the extraordinary life I desire."
+        </div>
+        
+        <h3>⚡ For Energy and Vitality</h3>
+        
+        <div class="affirmation-card">
+            "My body is full of vital energy. I feel vibrant, alive, and powerful. Every cell in my body radiates vitality."
+        </div>
+        
+        <div class="affirmation-card">
+            "I wake up with maximum energy and maintain my elevated energy throughout the day. My body is a high-performance machine."
+        </div>
+        
+        <div class="affirmation-card">
+            "I have unlimited energy to accomplish everything that's important to me. Fatigue doesn't control me."
+        </div>
+        
+        <h3>🎯 For Motivation and Focus</h3>
+        
+        <div class="affirmation-card">
+            "I am completely focused on my goals and advance every day. Nothing distracts me from what truly matters."
+        </div>
+        
+        <div class="affirmation-card">
+            "My motivation is unshakeable. I transform intentions into actions and actions into extraordinary results."
+        </div>
+        
+        <div class="affirmation-card">
+            "I have absolute clarity about my purpose and iron discipline to achieve it. I am unstoppable."
+        </div>
+        
+        <div class="highlight-box">
+            <p><strong>How to use:</strong> Choose 2-3 phrases that resonate with you and repeat them during Step 2 of the method.</p>
+            
+            <p>Change phrases weekly to work on different areas of your life.</p>
+            
+            <p><strong>Remember:</strong> Don't just read. FEEL each word. Your brain responds to emotion.</p>
+        </div>
+    </div>
+
+    <!-- Added new section: How to Use This Book -->
+    <div class="page">
+        <div class="chapter-number">INSTRUCTIONS FOR USE</div>
+        <h2>How to Use This Book</h2>
+        
+        <p>This isn't a book to be read and forgotten. It's a practical manual for daily transformation.</p>
+        
+        <p>Here's exactly how to use this guide to get the best results:</p>
+        
+        <h3>📖 How to apply the method daily</h3>
+        
+        <div class="intro-box">
+            <p><strong>Ideal time:</strong> Practice the 6-Minute Method immediately upon waking, before grabbing your phone or doing any other activity.</p>
+            
+            <p>Why? Your brain is in the maximum neural plasticity window in the first 20 minutes after waking. This is when reprogramming is most effective.</p>
+        </div>
+        
+        <ol>
+            <li><strong>Set your alarm 6 minutes earlier</strong> — Don't try to "fit" the method into your routine. Create space for it.</li>
+            <li><strong>Keep this guide by your bedside</strong> — Especially in the first weeks, you'll need to consult the steps.</li>
+            <li><strong>Follow the exact sequence</strong> — Step 1 (Activation), Step 2 (Reprogramming), Step 3 (Direction). Don't skip stages.</li>
+            <li><strong>Use a timer</strong> — Use your phone or watch timer to ensure you dedicate 2 minutes to each step.</li>
+            <li><strong>Practice every day</strong> — Consistency is more important than perfection. 6 imperfect minutes is better than no minutes.</li>
+        </ol>
+        
+        <h3>📋 How to use the Pocket Guide</h3>
+        
+        <p>In the Extra Bonus Chapter, you'll find the "Pocket Guide" — a condensed version of the method in 1 page.</p>
+        
+        <div class="technique-box">
+            <h4>Suggestions for use:</h4>
+            <ul>
+                <li><strong>Print and stick on the bathroom mirror</strong> — For quick reference every morning</li>
+                <li><strong>Take a photo and save to your phone's home screen</strong> — For quick access</li>
+                <li><strong>Make a laminated version</strong> — To carry in your wallet or bag</li>
+                <li><strong>Share with your accountability partner</strong> — For mutual reinforcement</li>
+            </ul>
+        </div>
+        
+        <p>After 7-10 days of practice, you probably won't need to consult the guide anymore. The method will become automatic.</p>
+        
+        <h3>📅 When to read the ebook</h3>
+        
+        <p><strong>First reading:</strong> Read the complete ebook in one sitting to understand the entire structure and the science behind the method. This will take 30-40 minutes.</p>
+        
+        <p><strong>Strategic re-readings:</strong></p>
+        
+        <ul>
+            <li><strong>Day 7:</strong> Re-read Chapters 3, 4, and 5 to reinforce the practical steps</li>
+            <li><strong>Day 14:</strong> Re-read Chapter 6 (21-Day Challenge) to renew your motivation</li>
+            <li><strong>Day 21:</strong> Re-read the Conclusion to celebrate your achievement and plan continuity</li>
+            <li><strong>When you need inspiration:</strong> Re-read Chapters 1 and 2 to reconnect with the "why"</li>
+        </ul>
+        
+        <h3>⚡ How to put techniques into practice</h3>
+        
+        <div class="step-card">
+            <h3>First Week (Days 1-7): Learning</h3>
+            <p>Focus on memorizing the sequence. Use the complete guide as support. Don't worry about doing it "perfect," just practice.</p>
+        </div>
+        
+        <div class="step-card">
+            <h3>Second Week (Days 8-14): Refinement</h3>
+            <p>Now you already know the steps. Focus on intensifying the emotion at each stage. Feel each word, each declaration.</p>
+        </div>
+        
+        <div class="step-card">
+            <h3>Third Week (Days 15-21): Automation</h3>
+            <p>The method is becoming natural. Personalize the phrases, adjust what works best for you. You own the process now.</p>
+        </div>
+        
+        <h3>❌ Common mistakes to avoid</h3>
+        
+        <div class="technique-box">
+            <h4>🚫 Don't do this:</h4>
+            <ul>
+                <li><strong>Grab your phone before the method</strong> — This destroys the neural plasticity window</li>
+                <li><strong>Practice on autopilot</strong> — Repeating without emotion doesn't work. Feel each word.</li>
+                <li><strong>Skip days "just this once"</strong> — Inconsistency breaks neural construction</li>
+                <li><strong>Rush through it</strong> — 6 rushed minutes don't have the same effect as 6 present minutes</li>
+                <li><strong>Give up in the first days</strong> — Deep changes begin after day 7-10</li>
+                <li><strong>Overcomplicate it</strong> — The method is simple. Don't add 10 extra steps.</li>
+                <li><strong>Not track progress</strong> — The tracking table is essential for awareness</li>
+            </ul>
+        </div>
+        
+        <h3>✅ Recommendations for best results</h3>
+        
+        <ul>
+            <li><strong>Sleep well the night before</strong> — Your brain needs adequate rest for reprogramming</li>
+            <li><strong>Hydrate upon waking</strong> — Drink water before starting the method</li>
+            <li><strong>Practice in a quiet environment</strong> — Minimize external distractions</li>
+            <li><strong>Involve your body</strong> — Don't just do it mentally. Use physical gestures to anchor</li>
+            <li><strong>Vary reprogramming phrases</strong> — Alternate between the 12 bonus phrases according to your needs</li>
+            <li><strong>Share with someone</strong> — Having an accountability partner increases success rate by 65%</li>
+            <li><strong>Document changes</strong> — Besides the table, note insights and transformations you notice</li>
+        </ul>
+        
+        <h3>🕐 Routine tips: time, environment, consistency</h3>
+        
+        <div class="intro-box">
+            <h4>⏰ Ideal time:</h4>
+            <p><strong>Best time:</strong> In the first 5-10 minutes after waking</p>
+            <p><strong>Second best:</strong> Up to 20 minutes after waking</p>
+            <p><strong>Avoid:</strong> Practicing after checking your phone or more than 30 minutes after waking</p>
+        </div>
+        
+        <div class="intro-box">
+            <h4>🏠 Ideal environment:</h4>
+            <ul>
+                <li>Quiet place without distractions</li>
+                <li>Can be in the bedroom, living room, or even bathroom — important thing is being alone</li>
+                <li>Preferably standing or sitting (not lying down, to avoid going back to sleep)</li>
+                <li>Good natural lighting, if possible</li>
+                <li>Phone on airplane mode (use only the timer)</li>
+            </ul>
+        </div>
+        
+        <div class="intro-box">
+            <h4>🔄 Consistency:</h4>
+            <p><strong>Create a ritual:</strong> Always practice in the same place, at the same time. This creates a powerful environmental trigger.</p>
+            <p><strong>Never skip 2 consecutive days:</strong> If you skipped yesterday, today is non-negotiable.</p>
+            <p><strong>Prepare the night before:</strong> Leave this guide open to the Pocket Guide page by your bedside.</p>
+        </div>
+        
+        <div class="highlight-box">
+            <p><strong>Remember:</strong> This method only works with consistent practice. It's not about being perfect. It's about showing up every day, for 6 minutes, for 21 days.</p>
+            
+            <p><strong>If you do this, your life will change. Guaranteed.</strong></p>
+        </div>
+    </div>
+
+    <!-- Pocket Guide -->
+    <div class="page">
+        <div class="chapter-number">EXTRA BONUS</div>
+        <h2>Pocket Guide — The 6-Minute Method in 1 Page</h2>
+        
+        <p>Print or save this page for quick reference. It's all you need to remember.</p>
+        
+        <div class="step-card">
+            <h3>⏱️ STEP 1: Activate your brain (2 min)</h3>
+            <ul>
+                <li><strong>30s:</strong> 4-7-8 breathing (3 repetitions)</li>
+                <li><strong>30s:</strong> Activation declaration (2-3x with emotion)</li>
+                <li><strong>30s:</strong> Body activation (stand, stretch, smile, clap)</li>
+                <li><strong>30s:</strong> Anchoring gesture (your power gesture)</li>
+            </ul>
+        </div>
+        
+        <div class="step-card">
+            <h3>🧠 STEP 2: Emotional reprogramming (2 min)</h3>
+            <ul>
+                <li><strong>45s:</strong> Immediate replacement (identify negative thought and replace 3x)</li>
+                <li><strong>45s:</strong> Emotional anchoring (remember positive moment + gesture)</li>
+                <li><strong>30s:</strong> 5 anti-anxiety phrases (hand on heart)</li>
+            </ul>
+        </div>
+        
+        <div class="step-card">
+            <h3>🎯 STEP 3: Daily direction (2 min)</h3>
+            <ul>
+                <li><strong>30s:</strong> Power question (what will make you proud today?)</li>
+                <li><strong>60s:</strong> 3 priorities (non-negotiable + growth + well-being)</li>
+                <li><strong>15s:</strong> Word of the day (choose 1 word and repeat 3x)</li>
+                <li><strong>15s:</strong> Action mode activation (final declaration + power gesture)</li>
+            </ul>
+        </div>
+        
+        <div class="technique-box">
+            <h4>📋 Quick Checklist</h4>
+            <p>Before starting your day, confirm:</p>
+            <ul>
+                <li>☐ Completed the 6 minutes</li>
+                <li>☐ Did my power gesture</li>
+                <li>☐ Defined my 3 priorities</li>
+                <li>☐ Chose my word of the day</li>
+                <li>☐ I'm ready to act</li>
+            </ul>
+        </div>
+        
+        <div class="highlight-box">
+            <p><strong>Remember:</strong> Consistency > Perfection</p>
+            <p>6 minutes every day > 1 hour once a week</p>
+            <p><strong>Your future is built in the first 6 minutes of each day.</strong></p>
+        </div>
+    </div>
+
+    <!-- About the Author -->
+    <div class="page">
+        <div class="chapter-number">ABOUT THE AUTHOR</div>
+        <h2>Who Created This Method</h2>
+        
+        <div class="intro-box">
+            <p>My name doesn't matter as much as my story.</p>
+            
+            <p>A few years ago, I was exactly where you might be now: trapped in destructive mental patterns, waking up without purpose, living on autopilot.</p>
+            
+            <p>I had everything "on paper" — work, relationships, health — but inside, I was empty.</p>
+        </div>
+        
+        <p>I tried everything: traditional therapy, 1-hour meditation, self-help books, expensive personal development courses.</p>
+        
+        <p>Some helped. But nothing was sustainable. Nothing fit my chaotic routine.</p>
+        
+        <p>That's when I discovered the neuroscience of mental reprogramming and the science of micro-habits.</p>
+        
+        <p><strong>And everything changed.</strong></p>
+        
+        <h3>The Creation of the 6-Minute Method</h3>
+        
+        <p>I spent months studying research from Stanford, Harvard, MIT, and other neuroscience centers.</p>
+        
+        <p>I tested dozens of different protocols on myself. Some worked. Many didn't.</p>
+        
+        <p>Until I found the perfect combination: <strong>6 minutes, 3 steps, results in 21 days.</strong></p>
+        
+        <p>I started sharing with friends. Then with colleagues. Then online.</p>
+        
+        <p>And transformations started happening.</p>
+        
+        <div class="technique-box">
+            <h4>🎯 My Mission</h4>
+            <p>My mission is simple: <strong>democratize mental transformation.</strong></p>
+            
+            <p>You don't need years of therapy. You don't need complex rituals. You don't need free hours.</p>
+            
+            <p>You just need 6 minutes and a system that works.</p>
+            
+            <p><strong>And that's exactly what this method delivers.</strong></p>
+        </div>
+        
+        <p>Today, thousands of people around the world practice the 6-Minute Method every day.</p>
+        
+        <p>Executives, students, parents, entrepreneurs, athletes — people from all areas who decided to take control of their minds.</p>
+        
+        <p>And now it's your turn.</p>
+        
+        <div class="highlight-box">
+            <p><strong>Why do I do this?</strong></p>
+            
+            <p>Because I know what it's like to be stuck. I know what it's like to wake up without purpose. I know what it's like to feel you're wasting your potential.</p>
+            
+            <p>And I know there's a way out. A simple, scientific, and effective path.</p>
+            
+            <p><strong>If this method changed my life and the lives of thousands of people, it can change yours too.</strong></p>
+        </div>
+    </div>
+
+    <!-- Social Proof -->
+    <div class="page">
+        <div class="chapter-number">TRANSFORMATION STORIES</div>
+        <h2>Real People, Real Results</h2>
+        
+        <p>These are stories of people who applied the 6-Minute Method and transformed their lives in 21 days.</p>
+        
+        <div class="technique-box">
+            <h4>📖 Marina, 34 — Marketing Executive</h4>
+            <p><em>"I woke up every day with that anxiety in my chest. I'd grab my phone before even getting out of bed and start the day stressed."</em></p>
+            
+            <p><strong>After 21 days:</strong> "My morning anxiety disappeared. I wake up with clarity, do my 6 minutes, and start the day with purpose. My productivity tripled and I finally feel in control of my life."</p>
+        </div>
+        
+        <div class="technique-box">
+            <h4>📖 Rafael, 28 — Entrepreneur</h4>
+            <p><em>"I had a thousand ideas but zero focus. I'd start projects and never finish. My mind was always scattered."</em></p>
+            
+            <p><strong>After 21 days:</strong> "The method gave me the clarity I needed. Now I define my 3 priorities every day and execute with total focus. I launched my business in 2 months — something I'd been postponing for years."</p>
+        </div>
+        
+        <div class="technique-box">
+            <h4>📖 Juliana, 42 — Teacher and Mother</h4>
+            <p><em>"Between work, kids, and home, I was exhausted. I had no time for myself. I woke up tired and went to bed exhausted."</em></p>
+            
+            <p><strong>After 21 days:</strong> "6 minutes seemed impossible at first, but it changed everything. I have more energy, more patience with my kids, and finally feel present in my own life. It's the best investment I've ever made in myself."</p>
+        </div>
+        
+        <div class="technique-box">
+            <h4>📖 Carlos, 51 — Sales Manager</h4>
+            <p><em>"After years in the same routine, I was on autopilot. No motivation, no purpose, just surviving."</em></p>
+            
+            <p><strong>After 21 days:</strong> "I feel 20 years younger. My energy is back, my confidence is sky-high, and I finally have clarity about what I want from life. This method gave me a complete reset."</p>
+        </div>
+        
+        <div class="technique-box">
+            <h4>📖 Beatriz, 25 — University Student</h4>
+            <p><em>"I struggled with procrastination and self-sabotage. I knew what I needed to do but never did it."</em></p>
+            
+            <p><strong>After 21 days:</strong> "My thought patterns changed completely. I don't procrastinate anymore. I wake up, do my 6 minutes, and execute. My grades improved, my anxiety decreased, and I finally feel capable."</p>
+        </div>
+        
+        <div class="intro-box" style="background: #fff5e6; border-left-color: #ffa500;">
+            <p style="font-size: 14px; font-style: italic; margin-bottom: 0;"><strong>Important note:</strong> The results presented are based on real reports from method practitioners. Individual results may vary depending on various factors, including practice consistency, personal context, and commitment. This method does not replace professional support when necessary.</p>
+        </div>
+        
+        <div class="highlight-box">
+            <p><strong>What do all these people have in common?</strong></p>
+            
+            <p>They weren't special. They didn't have superpowers. They didn't have more time than you.</p>
+            
+            <p><strong>They just decided to act. And you can do the same.</strong></p>
+        </div>
+    </div>
+
+    <!-- FINAL PAGE -->
+    <div class="page">
+        <div class="chapter-number">CONCLUSION</div>
+        <h2>Your New Life Starts Now</h2>
+        
+        <p>You've reached the end of this guide.</p>
+        
+        <p>But it's not the end. It's the beginning.</p>
+        
+        <p>You have in your hands something most people will never have: <strong>a proven system for mental transformation</strong>.</p>
+        
+        <p>It's not theory. It's not empty motivation. It's a scientific protocol that works.</p>
+        
+        <p><strong>But it only works if you use it.</strong></p>
+        
+        <div class="intro-box">
+            <p>Here's the brutal truth: 95% of people who read this guide won't do anything with it.</p>
+            
+            <p>They'll find it interesting. They'll even agree with everything. But they won't act.</p>
+            
+            <p>And 6 months from now, they'll be in exactly the same place, complaining about the same things.</p>
+            
+            <p><strong>Don't be that person.</strong></p>
+        </div>
+        
+        <h3>What to expect in the next 21 days:</h3>
+        
+        <ul>
+            <li><strong>Days 1-7:</strong> You'll feel more mental clarity, morning energy, and less anxiety</li>
+            <li><strong>Days 8-14:</strong> Your thought patterns will begin to change. You'll notice you react differently to situations</li>
+            <li><strong>Days 15-21:</strong> The new habit will be consolidated. You'll feel deep transformations in your confidence, focus, and well-being</li>
+        </ul>
+        
+        <h3>Your Commitment</h3>
+        
+        <p>Make this commitment to yourself now:</p>
+        
+        <div class="step-card">
+            <h3>My Transformation Commitment</h3>
+            <p>"I commit to practicing the 6-Minute Method every day for the next 21 days, without exceptions.</p>
+            
+            <p>I understand that real transformation requires consistency, not perfection.</p>
+            
+            <p>I'm willing to invest 6 minutes a day to change my life.</p>
+            
+            <p>I won't give up. I won't skip days. I'll go all the way.</p>
+            
+            <p><strong>Because I deserve an extraordinary life. And I will create it.</strong>"</p>
+            
+            <p style="margin-top: 30px;">Signature: _______________________________</p>
+            <p>Start date: ___/___/______</p>
+        </div>
+        
+        <h3>🚀 Your Next Step (DO IT NOW)</h3>
+        
+        <p>Don't wait for the perfect moment. It doesn't exist.</p>
+        
+        <p>Don't wait for Monday. Don't wait to be "ready."</p>
+        
+        <p><strong>Do this NOW:</strong></p>
+        
+        <ol>
+            <li><strong>Set your alarm</strong> for 6 minutes earlier tomorrow</li>
+            <li><strong>Leave this guide by your bedside</strong> for quick reference</li>
+            <li><strong>Write your "why"</strong> — Why do you want to change? Write it on paper and stick it on the mirror</li>
+            <li><strong>Find an accountability partner</strong> — Share this challenge with someone</li>
+            <li><strong>Commit publicly</strong> — Post on social media that you're starting the 21-Day Challenge</li>
+        </ol>
+        
+        <div class="highlight-box">
+            <p><strong>Your life can change completely in 21 days.</strong></p>
+            
+            <p>But it all starts with the first 6 minutes.</p>
+            
+            <p>Tomorrow morning, when the alarm goes off, you'll have a choice:</p>
+            
+            <p>Grab your phone and start the day on autopilot...</p>
+            
+            <p>Or practice the 6-Minute Method and start reprogramming your life.</p>
+            
+            <p><strong>The choice is yours. But only you can make it.</strong></p>
+        </div>
+        
+        <h3>Final Message</h3>
+        
+        <p>I believe in you.</p>
+        
+        <p>You wouldn't be here, reading to the end, if you didn't have within you the genuine desire for change.</p>
+        
+        <p>That desire is powerful. But desire without action is just fantasy.</p>
+        
+        <p><strong>Transform your desire into action. Start tomorrow. Don't stop until day 21.</strong></p>
+        
+        <div class="intro-box" style="margin-top: 50px; background: #fff5e6; border-left-color: #ffa500;">
+            <h4 style="color: #ff8c00; margin-top: 0;">⚠️ Important Disclaimer</h4>
+            <p style="font-size: 14px; line-height: 1.6;">This guide is educational and personal development material. It does not replace professional psychological, psychiatric, or medical support.</p>
+            
+            <p style="font-size: 14px; line-height: 1.6;">Results vary from person to person and depend on various factors, including practice consistency, individual context, and personal commitment.</p>
+            
+            <p style="font-size: 14px; line-height: 1.6;">If you're facing mental health issues, severe anxiety, depression, or any condition requiring professional attention, seek a qualified specialist.</p>
+            
+            <p style="font-size: 14px; line-height: 1.6; margin-bottom: 0;"><strong>This method is a complementary personal development tool, not medical treatment.</strong></p>
+        </div>
+        
+        <div class="page-footer">
+            <p><strong>The 6-Minute Method</strong></p>
+            <p>Express Reprogramming to Change Your Life in 21 Days</p>
+            <p style="margin-top: 20px;">© All rights reserved</p>
+        </div>
+    </div>
+
+    <!-- Added new section: Final Thank You -->
+    <div class="page">
+        <div class="chapter-number">CLOSING</div>
+        <h2>Final Thank You</h2>
+        
+        <p>We've reached the end of this journey together.</p>
+        
+        <p>And I want to tell you something important:</p>
+        
+        <p><strong>Thank you.</strong></p>
+        
+        <p>Thank you for reading this far. Thank you for giving yourself the chance to change. Thank you for believing there's a better way.</p>
+        
+        <div class="intro-box">
+            <p>Many people never make it here.</p>
+            
+            <p>They give up halfway. They close the guide. They say they'll "read it later."</p>
+            
+            <p>But not you. You're here. And that says a lot about who you are.</p>
+            
+            <p><strong>You're someone willing to do the work. Someone seeking real evolution. Someone who doesn't settle for mediocrity.</strong></p>
+        </div>
+        
+        <h3>💙 You are capable</h3>
+        
+        <p>I don't know you personally. But I know something about you:</p>
+        
+        <p><strong>You're stronger than you think.</strong></p>
+        
+        <p>You have incredible strength within you. You've already overcome so many things in life. You've already conquered challenges that seemed impossible.</p>
+        
+        <p>And now you have one more tool. A simple, scientific, and powerful method to reprogram your mind.</p>
+        
+        <p>You don't need superpowers. You don't need perfect circumstances.</p>
+        
+        <p><strong>You just need 6 minutes a day. And you already have that.</strong></p>
+        
+        <div class="step-card">
+            <h3>🌟 A message for you</h3>
+            <p>On difficult days — and they will come — remember this:</p>
+            
+            <p><strong>Every great transformation begins with small consistent actions.</strong></p>
+            
+            <p>You don't need to change everything at once. You don't need to be perfect. You just need to show up, every day, for 6 minutes.</p>
+            
+            <p>And when you do that, something magical happens: your mind begins to change. Your patterns begin to transform. Your life begins to improve.</p>
+            
+            <p>One day at a time. One thought at a time. One step at a time.</p>
+        </div>
+        
+        <h3>🚀 Start tomorrow. Don't give up.</h3>
+        
+        <p>Now you have everything you need:</p>
+        
+        <ul>
+            <li>✅ The science proving it works</li>
+            <li>✅ The complete 3-step protocol</li>
+            <li>✅ The structured 21-day challenge</li>
+            <li>✅ The tracking tools</li>
+            <li>✅ The Pocket Guide for quick reference</li>
+        </ul>
+        
+        <p>Tomorrow morning, when the alarm goes off, you'll have a choice.</p>
+        
+        <p>You can hit "snooze" and go back to sleep.</p>
+        
+        <p>You can grab your phone and start the day on autopilot.</p>
+        
+        <p><strong>Or you can get up, grab this guide, and do your first 6 minutes of transformation.</strong></p>
+        
+        <div class="highlight-box">
+            <p style="font-size: 18px;"><strong>I believe in you. Now it's your turn to believe in yourself.</strong></p>
+            
+            <p>21 days from now, you'll look back and think: "It was totally worth it."</p>
+            
+            <p>You'll feel stronger. Clearer. More confident. More alive.</p>
+            
+            <p><strong>And it all started with a simple decision: to begin.</strong></p>
+        </div>
+        
+        <h3>🤝 Last strong message</h3>
+        
+        <p style="margin-top: 40px; font-size: 22px; font-weight: 700; text-align: center; line-height: 1.5;">
+            The distance between who you are today and who you want to be is just 6 minutes a day for 21 days.
+        </p>
+        
+        <p style="font-size: 22px; font-weight: 700; text-align: center; line-height: 1.5; margin-top: 20px;">
+            <strong>The journey begins tomorrow. Don't waste this chance.</strong>
+        </p>
+        
+        <div class="intro-box" style="margin-top: 50px; text-align: center;">
+            <p style="font-size: 16px;"><strong>💫 One final request (optional):</strong></p>
+            
+            <p>If this method transforms your life — and I believe it will — consider sharing it with someone you love.</p>
+            
+            <p>It could be a friend who's struggling. A family member who needs hope. A colleague who's lost.</p>
+            
+            <p>Transformation is more powerful when shared.</p>
+            
+            <p style="margin-top: 20px;"><strong>Together, we can create a wave of change.</strong></p>
+        </div>
+        
+        <div class="page-footer" style="margin-top: 80px;">
+            <p style="font-size: 18px; font-weight: 600;">With gratitude and confidence in you,</p>
+            <p style="font-size: 24px; font-weight: 700; margin-top: 10px;">The 6-Minute Method</p>
+            <p style="margin-top: 30px; font-size: 14px; font-style: italic;">"Your life changes when you decide to change it. And that decision starts now."</p>
+        </div>
+    </div>
+<!-- === GOOGLE TRANSLATE WIDGET === -->
+<div id="google_translate_element" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;"></div>
+
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'ar,bg,cs,da,de,el,en,es,et,fi,fr,hi,hr,hu,id,it,ja,ko,lt,lv,ms,nl,no,pl,pt,ro,ru,sk,sl,sr,sv,th,tr,uk,vi,zh-CN,zh-TW',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    }
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>
